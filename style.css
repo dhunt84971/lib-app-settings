@@ -1,0 +1,26 @@
+/* Stop the highlighting of non-input areas. */
+:not(input):not(textarea):not(p),
+:not(input):not(textarea):not(p)::after,
+:not(input):not(textarea):not(p)::before {
+    -webkit-user-select: none;
+    user-select: none;
+} 
+
+#txtView, #txtView::after, #txtView::before {
+    -webkit-user-select: auto;
+    user-select: auto;
+}
+
+* {
+    margin: 0;
+    /*padding: 0;*/
+    box-sizing: border-box;
+}
+
+html,
+body {
+    background: var(--bodyColor);
+    font: 13px/1.5 "Helvetica Neue", Helvetica, Arial, san-serif;
+    overflow: hidden;
+    height: 100%;
+}

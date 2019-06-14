@@ -1,0 +1,17 @@
+{
+  "name": "lib-settings",
+  "version": "0.0.1",
+  "description": "Module for handling a settings file.",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "author": "Habadeer",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^5.0.2"
+  },
+  "dependencies": {
+    "js-treeview": "^1.1.5"
+  }
+}
