@@ -48,11 +48,11 @@
                     reject(err);
                 } else {
                     _settings = JSON.parse(data); //parse into an object
+                    resolve(_settings);
                 }
                 if (callback) {
                     callback(err, _settings);
                 }
-                resolve(_settings);
             });
         });
     }
