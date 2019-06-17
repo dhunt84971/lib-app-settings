@@ -142,8 +142,7 @@
             });
 
         } else {
-            saveSettingsToFile((err, _settings) => {
-                //console.log("loaded settings first using a callback.");
+            saveSettingsToFile((err) => {
                 callback(err);
             });
         }
