@@ -3,6 +3,7 @@ const libAppSettings = require("./lib-app-settings");
 
 //var _libSettings = new libSettings(".settings");
 var _appSettings = new libAppSettings(".settings");
+var _initSettings = {"lib-app-settings" : "0.1.0"};
 var _settings = {};
 
 // Initialization code.
@@ -13,14 +14,16 @@ async function init(){
     console.log("Example of call using await and a promise.");
     console.log("await _appSettings.loadSettingsFromFile(); - ");
     await _appSettings.loadSettingsFromFile()
-    .then((resolve,reject)=>{
+    .then((resolve)=>{
+        console.log("got here");
         if (resolve){
             _settings = resolve;
-        }
-        if (reject){
-            _appSettings.setSettingsInMemory(settings);
-            _appSettings.saveSettingsToFile();
-        }
+        }})
+    .catch((err)=>{
+        // Assume any error means the settings file does not exist and create it.
+        _settings = _initSettings;
+        _appSettings.setSettingsInMemory(_settings);
+        _appSettings.saveSettingsToFile();
     });
     console.log(_settings);
 
