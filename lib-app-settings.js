@@ -140,7 +140,6 @@
                     else resolve();
                 });
             });
-
         } else {
             saveSettingsToFile((err) => {
                 callback(err);
