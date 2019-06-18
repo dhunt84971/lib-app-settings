@@ -3,7 +3,7 @@ const libAppSettings = require("./lib-app-settings");
 
 //var _libSettings = new libSettings(".settings");
 var _appSettings = new libAppSettings(".settings");
-var _initSettings = {"lib-app-settings" : "0.1.0"};
+var _initSettings = {"lib-app-settings" : "1.0.0"};
 var _settings = {};
 
 // Initialization code.
