@@ -132,9 +132,9 @@
     };
 
     AppSettings.prototype.setSettingsInFile = function (settings, callback) {
+        _settings = settings;
         if (typeof callback !== "function") {
             return new Promise(function (resolve, reject) {
-                _settings = settings;
                 saveSettingsToFile((err) => {
                     if (err) reject();
                     else resolve();
