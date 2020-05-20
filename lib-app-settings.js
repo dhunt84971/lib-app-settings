@@ -47,7 +47,13 @@
                 if (err) {
                     reject(err);
                 } else {
-                    _settings = JSON.parse(data); //parse into an object
+                    try {
+                        _settings = JSON.parse(data); //parse into an object
+                    }
+                    catch (e){
+                        reject(e);
+                        err = e;
+                    }
                     resolve(_settings);
                 }
                 if (callback) {
