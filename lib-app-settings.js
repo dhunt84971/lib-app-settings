@@ -13,29 +13,43 @@
     }
 }(this, function () {
     "use strict";
+    const lockFile = require('lockfile');
     const fs = require("fs");
 
     //Global variables.
     var _settingsFile = "";
     var _settings = {};
+    var _lockFilename = "";
 
     function AppSettings(settingsFile) {
         _settingsFile = settingsFile;
+        _lockFilename = _settingsFile + ".lock"; 
     }
 
     //#region PRIVATE METHODS
     /// Save settings to the .settings file.
     function saveSettingsToFile(callback) {
         return new Promise(function (resolve, reject) {
-            var json = JSON.stringify(_settings);
-            fs.writeFile(_settingsFile, json, "utf8", (err) => {
-                if (err) {
-                    reject(err);
+            lockFile.lock(_lockFilename, {"wait":3000}, (er) =>{
+                if (er) {
+                    reject(er);
+                    if (callback) {
+                        callback(er);
+                    }
+                    return;
                 }
-                if (callback) {
-                    callback(err);
-                }
-                resolve();
+                var json = JSON.stringify(_settings);
+                fs.writeFile(_settingsFile, json, "utf8", (err) => {
+                    lockFile.unlock(_lockFilename, (er)=>{
+                        if (err || er) {
+                            reject(err);
+                        }
+                        if (callback) {
+                            callback(err);
+                        }
+                        resolve();
+                    });
+                });
             });
         });
     }
@@ -43,22 +57,31 @@
     /// Load settings from the .settings file.
     function loadSettingsFromFile(callback) {
         return new Promise(function (resolve, reject) {
-            fs.readFile(_settingsFile, "utf8", (err, data) => {
-                if (err) {
-                    reject(err);
-                } else {
-                    try {
-                        _settings = JSON.parse(data); //parse into an object
-                    }
-                    catch (e){
-                        reject(e);
-                        err = e;
-                    }
-                    resolve(_settings);
+            lockFile.lock(_lockFilename, {"wait":3000}, (er) =>{
+                if (er) {
+                    reject(er);
+                    return;
                 }
-                if (callback) {
-                    callback(err, _settings);
-                }
+                fs.readFile(_settingsFile, "utf8", (err, data) => {
+                    lockFile.unlock(_lockFilename, (er)=>{
+                        if (err || er) {
+                            reject(err);
+                        }
+                        else {
+                            try {
+                                _settings = JSON.parse(data); //parse into an object
+                            }
+                            catch (e){
+                                reject(e);
+                                err = e;
+                            }
+                            resolve(_settings);
+                        }
+                        if (callback) {
+                            callback(err, _settings);
+                        }
+                    });
+                });
             });
         });
     }
