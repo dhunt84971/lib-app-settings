@@ -32,13 +32,16 @@
         return new Promise(function (resolve, reject) {
             lockFile.lock(_lockFilename, {"wait":3000}, (er) =>{
                 if (er) {
+                    if (er.message.includes("EEXIST")){
+                        lockFile.unlockSync(_lockFilename);
+                    }
                     reject(er);
                     if (callback) {
                         callback(er);
                     }
                     return;
                 }
-                var json = JSON.stringify(_settings);
+                var json = JSON.stringify(_settings, null, 2);
                 fs.writeFile(_settingsFile, json, "utf8", (err) => {
                     lockFile.unlock(_lockFilename, (er)=>{
                         if (err || er) {
@@ -59,6 +62,10 @@
         return new Promise(function (resolve, reject) {
             lockFile.lock(_lockFilename, {"wait":3000}, (er) =>{
                 if (er) {
+                    console.log(er.message);
+                    if (er.message.includes("EEXIST")){
+                        lockFile.unlockSync(_lockFilename);
+                    }
                     reject(er);
                     return;
                 }

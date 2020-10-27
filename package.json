@@ -1,6 +1,6 @@
 {
   "name": "lib-app-settings",
-  "version": "1.1.0",
+  "version": "1.1.1",
   "description": "Module for handling a settings file.",
   "main": "lib-app-settings.js",
   "scripts": {},
